@@ -10,14 +10,22 @@
   },
   "author": "Erich Keil",
   "license": "ISC",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
+    "eslint-config-standard-jsx": "^8.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-app": "^6.2.2",
     "html-webpack-plugin": "^4.3.0",
     "node-sass": "^4.14.1",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",

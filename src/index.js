@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import './styles.scss';
+import PomTimer from './components/PomTimer.jsx'
 
-const Index = () => {
-    return <div>Hello MotherFuckin World!</div>;
-};
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(<PomTimer />, document.getElementById('root'));
