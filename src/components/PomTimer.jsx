@@ -1,5 +1,29 @@
 import React, { Component } from 'react';
-import { defaultState } from '../constants'
+
+const defaultTimerState = {
+    breakTime: 5,
+    sessionTime: 25,
+    timeLeft: "25:00"
+}
+export default class PomTimer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = defaultTimerState;
+    }
+    render() {
+        return (
+            <div id='wrapper'>
+                <Break breakTime={this.state.breakTime} />
+                <Session sessionTime={this.state.sessionTime} />
+                <Timer timeLeft={this.state.timeLeft} />
+                <StartStop />
+                <Reset />
+            </div>
+
+
+        )
+    }
+}
 
 const Break = props => {
     return (
@@ -7,7 +31,7 @@ const Break = props => {
             <button id='break-decrement'>-</button>
             <button id='break-increment'>+</button>
             <h2 id='break-label'>Break Length</h2>
-            <div id='break-length'>0</div>
+            <div id='break-length'>{props.breakTime}</div>
         </div>
     )
 }
@@ -18,7 +42,7 @@ const Session = props => {
             <button id='session-decrement'>-</button>
             <button id='session-increment'>+</button>
             <h2 id='session-label'>Session Length</h2>
-            <div id='session-length'>0</div>
+            <div id='session-length'>{props.sessionTime}</div>
         </div>
     )
 }
@@ -27,7 +51,7 @@ const Timer = props => {
     return (
         <div id='timer-wrapper'>
             <h1 id='timer-label'>Timer Label</h1>
-            <div id='time-left'>00:00</div>
+            <div id='time-left'>{props.timeLeft}</div>
         </div>
     )
 }
@@ -42,24 +66,4 @@ const Reset = props => {
     return (
         <button id='reset'>Reset</button>
     )
-}
-
-export default class PomTimer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { defaultState }
-    }
-    render() {
-        return (
-            <div id='wrapper'>
-                <Break />
-                <Session />
-                <Timer />
-                <StartStop />
-                <Reset />
-            </div>
-
-
-        )
-    }
 }
