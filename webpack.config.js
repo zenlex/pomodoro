@@ -34,9 +34,9 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif|wav)$/,
         loader: "file-loader",
-        options: {
-          name: "[path][name].[ext]",
-        },
+
+        options: { name: "[path][name].[ext]" },
+
       },
     ],
   },
