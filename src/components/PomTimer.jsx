@@ -72,12 +72,15 @@ export default class PomTimer extends Component {
   incrSession() {
     this.setState((state) => {
       var newTime = state.sessionTime < 60 ? state.sessionTime + 1 : 60;
-      if (state.running && state.mode == "session") {
-        var newSecs =
-          state.timeLeftSec < 10
-            ? "0" + state.timeLeftSec.toString()
-            : state.timeLeftSec.toString();
-        var newDisplay = newTime.toString() + newSecs;
+      var newSecs =
+        state.timeLeftSec < 10
+          ? "0" + state.timeLeftSec.toString()
+          : state.timeLeftSec.toString();
+      var newMins =
+        newTime < 10 ? "0" + newTime.toString() : newTime.toString();
+      var newDisplay = state.timerDisplay;
+      if (state.mode == "session" && state.running == true) {
+        newDisplay = newMins.toString() + ":" + newSecs;
         return {
           sessionTime: newTime,
           timeLeftMin: newTime,
@@ -87,8 +90,6 @@ export default class PomTimer extends Component {
       } else {
         return {
           sessionTime: newTime,
-          timeLeftMin: newTime,
-          timerDisplay: newDisplay,
         };
       }
     });
@@ -97,12 +98,17 @@ export default class PomTimer extends Component {
   decrSession() {
     this.setState((state) => {
       var newTime = state.sessionTime > 1 ? state.sessionTime - 1 : 1;
-      var newDisplay = newTime.toString() + ":00";
-      if (state.running && state.mode == "session") {
-        var newSecs =
-          state.timeLeftSec < 10
-            ? "0" + state.timeLeftSec.toString()
-            : state.timeLeftSec.toString();
+      var newMins =
+        newTime < 10 ? "0" + newTime.toString() : newTime.toString();
+
+      var newSecs =
+        state.timeLeftSec < 10
+          ? "0" + state.timeLeftSec.toString()
+          : state.timeLeftSec.toString();
+      var newDisplay = state.timerDisplay;
+
+      if (state.mode == "session" && state.running == true) {
+        newDisplay = newMins + ":" + newSecs;
         return {
           sessionTime: newTime,
           timeLeftMin: newTime,
@@ -110,15 +116,8 @@ export default class PomTimer extends Component {
           timerDisplay: newDisplay,
         };
       } else {
-        console.log("updating state: ", {
-          sessionTime: newTime,
-          timeLeftMin: newTime,
-          timerDisplay: newDisplay,
-        });
         return {
           sessionTime: newTime,
-          timeLeftMin: newTime,
-          timerDisplay: newDisplay,
         };
       }
     });
@@ -133,12 +132,14 @@ export default class PomTimer extends Component {
       if (secs >= 0) {
         secs--;
       }
+      if (secs == 0 && mins == 0) {
+        this.playSound();
+      }
       if (secs == -1 && mins > 0) {
         secs = 59;
         mins--;
       }
       if (secs == -1 && mins == 0) {
-        this.playSound();
         mode = mode == "session" ? "break" : "session";
         secs = 0;
         mins = mode == "session" ? state.sessionTime : state.breakTime;
@@ -165,7 +166,7 @@ export default class PomTimer extends Component {
         return { running: false };
       } else {
         console.log("starting timer, state =", state);
-        this.timerId = setInterval(this.countItDown, 100);
+        this.timerId = setInterval(this.countItDown, 10);
         return { running: true };
       }
     });
@@ -185,6 +186,7 @@ export default class PomTimer extends Component {
       return defaultTimerState;
     });
     clearInterval(this.timerId);
+    this.stopSound();
   }
 
   render() {
