@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 const workMsg = "Get 'er Done!";
 const breakMsg = "Chillax Bruh -_-";
-import chime from "../assets/chime.wav";
+import chime from "../static/chime.wav";
 
 const defaultTimerState = {
   breakTime: 5,
