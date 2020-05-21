@@ -146,7 +146,7 @@ export default class PomTimer extends Component {
         this.stopSound();
         return { running: false };
       } else {
-        this.timerId = setInterval(this.countItDown, 100);
+        this.timerId = setInterval(this.countItDown, 1000);
         return { running: true };
       }
     });
