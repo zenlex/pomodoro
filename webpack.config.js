@@ -13,10 +13,10 @@ module.exports = {
   },
   entry: "./src/index.js",
   output: {
-    //NEW
     path: path.join(__dirname, "dist"),
     filename: "[name].js",
-  }, //NEW Ends
+  },
+
   plugins: [htmlPlugin],
   module: {
     rules: [
@@ -34,7 +34,9 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif|wav)$/,
         loader: "file-loader",
+
         options: { name: "[path][name].[ext]" },
+
       },
     ],
   },
