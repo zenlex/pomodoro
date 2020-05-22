@@ -6,6 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
+    "pre-deploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erich Keil",
@@ -23,6 +25,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-app": "^6.2.2",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^4.3.0",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
@@ -37,5 +40,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "url-loader": "^4.1.0"
-  }
+  },
+  "homepage": "https://zenlex.github.io/pomodoro"
 }
