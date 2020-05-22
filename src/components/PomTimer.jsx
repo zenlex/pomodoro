@@ -19,7 +19,7 @@ export default class PomTimer extends Component {
     this.beep = new Audio(chime);
     this.beep.loop = false;
     this.state = defaultTimerState;
-    this.countItDown = this.countItDown.bind(this);
+    this.updateTimer = this.updateTimer.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
     this.resetDefault = this.resetDefault.bind(this);
     this.incrBreak = this.incrBreak.bind(this);
@@ -29,127 +29,110 @@ export default class PomTimer extends Component {
     this.playSound = this.playSound.bind(this);
     this.stopSound = this.stopSound.bind(this);
     this.switchModes = this.switchModes.bind(this);
+    this.tick = this.tick.bind(this);
+  }
+
+  updateTimer() {
+    var s = this.state;
+    var secs = s.timeLeftSec;
+    var mins = s.timeLeftMin;
+    if (mins == 0 && secs == 0) {
+      this.switchModes();
+    } else {
+      if (mins > 0 && secs == -1) {
+        mins -= 1;
+        secs = 59;
+      }
+      var dispMins = mins < 10 ? "0" + mins.toString() : mins.toString();
+      var dispSecs = secs < 10 ? "0" + secs.toString() : secs.toString();
+      var newTime = dispMins + ":" + dispSecs;
+      this.setState(() => {
+        return { timerDisplay: newTime, timeLeftMin: mins, timeLeftSec: secs };
+      });
+    }
   }
 
   incrBreak() {
-    this.setState((state) => {
-      var newTime = state.breakTime < 60 ? state.breakTime + 1 : 60;
-      return {
-        breakTime: newTime,
-      };
-    });
+    var s = this.state;
+    var newTime = s.breakTime < 60 ? s.breakTime + 1 : 60;
+    this.setState({ breakTime: newTime });
   }
 
   decrBreak() {
-    this.setState((state) => {
-      var newTime = state.breakTime > 1 ? state.breakTime - 1 : 1;
-      return {
-        breakTime: newTime,
-      };
-    });
+    var s = this.state;
+    var newTime = s.breakTime > 1 ? s.breakTime - 1 : 1;
+    this.setState({ breakTime: newTime });
   }
 
   incrSession() {
-    this.setState((state) => {
-      var newTime = state.sessionTime < 60 ? state.sessionTime + 1 : 60;
-
-      if (!state.running) {
-        var newMins =
-          newTime < 10 ? "0" + newTime.toString() : newTime.toString();
-        return {
-          sessionTime: newTime,
-          timeLeftMin: newMins,
-          timeLeftSecs: 0,
-          timerDisplay: newMins + ":" + "00",
-        };
-      } else {
-        return {
-          sessionTime: newTime,
-        };
-      }
-    });
+    var s = this.state;
+    var newTime = s.sessionTime < 60 ? s.sessionTime + 1 : 60;
+    this.setState({ sessionTime: newTime });
+    if (!s.running) {
+      var dispTime =
+        newTime < 10 ? "0" + newTime.toString() : newTime.toString();
+      this.setState({
+        timeLeftMin: newTime,
+        timeLeftSec: 0,
+        timerDisplay: dispTime + ":00",
+      });
+    }
   }
 
   decrSession() {
-    this.setState((state) => {
-      var newTime = state.sessionTime > 1 ? state.sessionTime - 1 : 1;
-      if (!state.running) {
-        var newMins =
-          newTime < 10 ? "0" + newTime.toString() : newTime.toString();
-        return {
-          sessionTime: newTime,
-          timeLeftMin: newMins,
-          timeLeftSecs: 0,
-          timerDisplay: newMins + ":" + "00",
-        };
-      } else {
-        return {
-          sessionTime: newTime,
-        };
-      }
+    var s = this.state;
+    var newTime = s.sessionTime > 1 ? s.sessionTime - 1 : 1;
+    this.setState({
+      sessionTime: newTime,
     });
+    if (!s.running) {
+      var dispTime =
+        newTime < 10 ? "0" + newTime.toString() : newTime.toString();
+      this.setState({
+        timeLeftMin: newTime,
+        timeLeftSec: 0,
+        timerDisplay: dispTime + ":00",
+      });
+    }
   }
 
-  countItDown() {
+  tick() {
     this.setState((state) => {
-      var newState = {};
-      var secs = state.timeLeftSec;
-      var mins = state.timeLeftMin;
-      if (secs == 0 && mins == 0) {
-        newState = this.switchModes(state.mode);
-      } else {
-        if (secs > 0) {
-          secs--;
-        } else if (mins > 0) {
-          secs = 59;
-          mins--;
-        }
-        var newSecs = secs < 10 ? "0" + secs.toString() : secs.toString();
-        var newMins = mins < 10 ? "0" + mins.toString() : mins.toString();
-        var newTime = newMins + ":" + newSecs;
-        newState = {
-          timeLeftMin: mins,
-          timeLeftSec: secs,
-          timerDisplay: newTime,
-        };
-      }
-      return newState;
+      return { timeLeftSec: state.timeLeftSec - 1 };
     });
+    this.updateTimer();
   }
 
-  switchModes(currMode) {
-    console.log("Switching Modes - currMode =", currMode);
-    console.log("Calling playSound(), state = ", this.state);
+  switchModes() {
+    this.setState({ timerDisplay: "00:00" });
     this.playSound();
-    var mode = currMode == "session" ? "break" : "session";
+    var s = this.state;
+    var mode = s.mode == "session" ? "break" : "session";
     var mins =
       mode == "session" ? this.state.sessionTime : this.state.breakTime;
-    var newMins = mins < 10 ? "0" + mins.toString() : mins.toString();
-    var secs = "00";
-    var newTime = newMins + ":" + secs;
+    var secs = 0;
     var timerLabel = mode == "session" ? workMsg : breakMsg;
+    var dispMins = mins < 0 ? "0" + mins.toString() : mins.toString();
     var newState = {
-      timerLabel: timerLabel,
-      timerDisplay: newTime,
       timeLeftMin: mins,
-      timeLeftSec: 0,
+      timeLeftSec: secs,
+      timerLabel: timerLabel,
+      timerDisplay: dispMins + ":00",
       mode: mode,
     };
-    console.log("returning newState = ", newState);
-    return newState;
+    this.setState(newState);
   }
 
   toggleTimer() {
-    this.setState((state) => {
-      if (state.running) {
-        clearInterval(this.timerId);
-        this.stopSound();
-        return { running: false };
-      } else {
-        this.timerId = setInterval(this.countItDown, 1000);
-        return { running: true };
-      }
-    });
+    var s = this.state;
+    if (s.running) {
+      clearInterval(this.timerId);
+      this.stopSound();
+      this.setState({ running: false });
+    } else {
+      this.timerId = setInterval(this.tick, 100);
+      this.setState({ running: true });
+    }
   }
 
   playSound() {
@@ -162,11 +145,9 @@ export default class PomTimer extends Component {
   }
 
   resetDefault() {
-    this.setState((state) => {
-      return defaultTimerState;
-    });
     clearInterval(this.timerId);
     this.stopSound();
+    this.setState(defaultTimerState);
   }
 
   render() {
