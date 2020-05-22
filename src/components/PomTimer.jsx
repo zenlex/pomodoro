@@ -143,8 +143,8 @@ export default class PomTimer extends Component {
   }
 
   resetDefault() {
-    clearInterval(this.timerId);
     this.stopSound();
+    clearInterval(this.timerId);
     this.setState(defaultTimerState);
   }
 
@@ -165,8 +165,10 @@ export default class PomTimer extends Component {
           timerDisplay={this.state.timerDisplay}
           label={this.state.timerLabel}
         />
-        <StartStop onClick={this.toggleTimer} />
-        <Reset onClick={this.resetDefault} />
+        <div id="button-wrapper">
+          <StartStop onClick={this.toggleTimer} />
+          <Reset onClick={this.resetDefault} />
+        </div>
         <audio id="beep" src={chime}></audio>
       </div>
     );
@@ -176,14 +178,14 @@ export default class PomTimer extends Component {
 const Break = (props) => {
   return (
     <div id="break-wrapper">
-      <button id="break-decrement" onClick={props.decr}>
-        -
-      </button>
+      <h2 id="break-label">Break Time</h2>
       <button id="break-increment" onClick={props.incr}>
         +
       </button>
-      <h2 id="break-label">Break Length</h2>
       <div id="break-length">{props.breakTime}</div>
+      <button id="break-decrement" onClick={props.decr}>
+        -
+      </button>
     </div>
   );
 };
@@ -191,14 +193,14 @@ const Break = (props) => {
 const Session = (props) => {
   return (
     <div id="session-wrapper">
-      <button id="session-decrement" onClick={props.decr}>
-        -
-      </button>
+      <h2 id="session-label">Work Time</h2>
       <button id="session-increment" onClick={props.incr}>
         +
       </button>
-      <h2 id="session-label">Session Length</h2>
       <div id="session-length">{props.sessionTime}</div>
+      <button id="session-decrement" onClick={props.decr}>
+        -
+      </button>
     </div>
   );
 };

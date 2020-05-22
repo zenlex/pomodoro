@@ -1,12 +1,134 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  color: brown;
+  color: black;
+  background-color: grey;
 }
 
 #fcctest {
-  display: block;
-  height: 300px;
+  display: none;
+  height: 50px;
   width: 100%;
   background-color: grey;
+}
+
+#wrapper {
+  display: grid;
+  height: 90vh;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 30% 50% 20%;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 5px;
+}
+
+button {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px darkgray;
+  font-size: 2em;
+}
+
+#timer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  grid-column: 1 / span 2;
+  grid-row: 2/3;
+  margin: 5px;
+  padding: 5px;
+}
+
+#timer-label {
+  font-size: 2em;
+}
+
+#time-left {
+  font-size: 5em;
+}
+
+#session-wrapper,
+#break-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#break-length,
+#session-length {
+  font-size: 2em;
+}
+
+#button-wrapper {
+  grid-column: 1 / span 2;
+  grid-row: 3/4;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#start_stop,
+#reset {
+  flex: 1 0;
+  height: 100%;
+}
+
+@media only screen and (max-height: 560px) {
+  button {
+    height: 50%;
+    flex: 1 0;
+  }
+
+  #break-length,
+  #session-length {
+    font-size: 2em;
+    flex: 1.5 0;
+    text-align: center;
+  }
+
+  #session-wrapper,
+  #break-wrapper {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  #break-label,
+  #session-label {
+    font-size: 1.25em;
+    flex: 1.5 0;
+    padding: 5px;
+    margin: 5px;
+  }
+
+  #time-left {
+    font-size: 4em;
+  }
+}
+
+@media only screen and (min-height: 768px) {
+  button {
+    height: 80%;
+    margin: 5px;
+  }
+  #break-length,
+  #session-length {
+    font-size: 2.5em;
+  }
 }
