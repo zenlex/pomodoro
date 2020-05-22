@@ -33,23 +33,23 @@ export default class PomTimer extends Component {
   }
 
   updateTimer() {
+    if (this.state.timerDisplay == "00:00") {
+      this.playSound();
+      this.switchModes();
+    }
     var s = this.state;
     var secs = s.timeLeftSec;
     var mins = s.timeLeftMin;
-    if (mins == 0 && secs == 0) {
-      this.switchModes();
-    } else {
-      if (mins > 0 && secs == -1) {
-        mins -= 1;
-        secs = 59;
-      }
-      var dispMins = mins < 10 ? "0" + mins.toString() : mins.toString();
-      var dispSecs = secs < 10 ? "0" + secs.toString() : secs.toString();
-      var newTime = dispMins + ":" + dispSecs;
-      this.setState(() => {
-        return { timerDisplay: newTime, timeLeftMin: mins, timeLeftSec: secs };
-      });
+    if (mins > 0 && secs == -1) {
+      mins -= 1;
+      secs = 59;
     }
+    var dispMins = mins < 10 ? "0" + mins.toString() : mins.toString();
+    var dispSecs = secs < 10 ? "0" + secs.toString() : secs.toString();
+    var newTime = dispMins + ":" + dispSecs;
+    this.setState(() => {
+      return { timerDisplay: newTime, timeLeftMin: mins, timeLeftSec: secs };
+    });
   }
 
   incrBreak() {
@@ -104,8 +104,6 @@ export default class PomTimer extends Component {
   }
 
   switchModes() {
-    this.setState({ timerDisplay: "00:00" });
-    this.playSound();
     var s = this.state;
     var mode = s.mode == "session" ? "break" : "session";
     var mins =
@@ -130,7 +128,7 @@ export default class PomTimer extends Component {
       this.stopSound();
       this.setState({ running: false });
     } else {
-      this.timerId = setInterval(this.tick, 100);
+      this.timerId = setInterval(this.tick, 1000);
       this.setState({ running: true });
     }
   }
