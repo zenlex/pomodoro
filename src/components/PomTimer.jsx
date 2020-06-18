@@ -16,8 +16,7 @@ const defaultTimerState = {
 export default class PomTimer extends Component {
   constructor(props) {
     super(props);
-    this.beep = new Audio(chime);
-    this.beep.loop = false;
+    const beep = document.getElementById("beep");
     this.state = defaultTimerState;
     this.updateTimer = this.updateTimer.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
@@ -134,12 +133,13 @@ export default class PomTimer extends Component {
   }
 
   playSound() {
-    this.beep.play();
+    beep.loop = false;
+    beep.play();
   }
 
   stopSound() {
-    this.beep.pause();
-    this.beep.currentTime = 0;
+    beep.pause();
+    beep.currentTime = 0;
   }
 
   resetDefault() {
