@@ -7,7 +7,7 @@
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
     "pre-deploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run pre-deploy && gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erich Keil",
