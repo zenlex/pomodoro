@@ -6,8 +6,8 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
+  mode:'development',
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 3000,
   },
@@ -28,8 +28,8 @@ module.exports = {
         },
       },
       {
-        test: /\.s?css$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif|wav)$/,
