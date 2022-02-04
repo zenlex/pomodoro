@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 const workMsg = "Get 'er Done!";
-const breakMsg = "Chillax Bruh -_-";
+const breakMsg = "Chillax -_-";
 import chime from "../assets/chime.wav";
 
 const defaultTimerState = {
@@ -118,6 +118,9 @@ export default class PomTimer extends Component {
       mode: mode,
     };
     this.setState(newState);
+    const appBody = document.getElementById('wrapper')
+    appBody.classList.add('mode-change');
+    setTimeout(()=> appBody.classList.remove('mode-change'), 1000)
   }
 
   toggleTimer() {
@@ -127,7 +130,7 @@ export default class PomTimer extends Component {
       this.stopSound();
       this.setState({ running: false });
     } else {
-      this.timerId = setInterval(this.tick, 1000);
+      this.timerId = setInterval(this.tick, 100);
       this.setState({ running: true });
     }
   }
@@ -166,7 +169,7 @@ export default class PomTimer extends Component {
           label={this.state.timerLabel}
         />
         <div id="button-wrapper">
-          <StartStop onClick={this.toggleTimer} />
+          <StartStop onClick={this.toggleTimer} label={this.state.running ? 'Stop' : 'Start'} />
           <Reset onClick={this.resetDefault} />
         </div>
         <audio id="beep" src={chime}></audio>
@@ -217,7 +220,9 @@ const Timer = (props) => {
 const StartStop = (props) => {
   return (
     <button id="start_stop" onClick={props.onClick}>
-      Start/Stop
+      <p>
+        {props.label}
+      </p>
     </button>
   );
 };
